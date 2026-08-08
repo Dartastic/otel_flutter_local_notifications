@@ -28,7 +28,8 @@ await fln.initialize(
 
 Each call opens a PRODUCER span named `local_notif <op> <id>`
 with `notification.system=flutter_local_notifications`,
-`notification.operation`, `notification.id`.
+`notification.operation`, `notification.id`. The keys are
+exported as the `LocalNotificationsSemantics` enum.
 
 **Notification body (title/text) is intentionally not recorded**
 — it often contains user-visible PII.

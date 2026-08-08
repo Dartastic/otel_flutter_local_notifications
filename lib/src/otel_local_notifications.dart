@@ -3,6 +3,7 @@
 
 import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
 
+import 'local_notifications_semantics.dart';
 import 'local_notifications_suppression.dart';
 
 const _tracerName = 'otel_flutter_local_notifications';
@@ -26,9 +27,9 @@ Future<R> tracedLocalNotificationCall<R>({
     id == null ? 'local_notif $operation' : 'local_notif $operation $id',
     kind: SpanKind.producer,
     attributes: OTel.attributesFromMap(<String, Object>{
-      'notification.system': _notifSystem,
-      'notification.operation': operation,
-      if (id != null) 'notification.id': id,
+      LocalNotificationsSemantics.notificationSystem.key: _notifSystem,
+      LocalNotificationsSemantics.notificationOperation.key: operation,
+      if (id != null) LocalNotificationsSemantics.notificationId.key: id,
     }),
   );
   try {
@@ -36,7 +37,7 @@ Future<R> tracedLocalNotificationCall<R>({
   } catch (e, st) {
     span.addAttributes(OTel.attributes([
       OTel.attributeString(
-        ErrorResource.errorType.key,
+        ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
     ]));
@@ -59,11 +60,12 @@ void recordNotificationResponse({required int? id, String? payload}) {
   final activeSpan = Context.current.span;
   if (activeSpan == null || !activeSpan.isValid) return;
   activeSpan.addEventNow(
-    'notification.tap',
+    notificationTapEventName,
     OTel.attributesFromMap(<String, Object>{
-      'notification.system': _notifSystem,
-      if (id != null) 'notification.id': id,
-      if (payload != null) 'notification.payload': payload,
+      LocalNotificationsSemantics.notificationSystem.key: _notifSystem,
+      if (id != null) LocalNotificationsSemantics.notificationId.key: id,
+      if (payload != null)
+        LocalNotificationsSemantics.notificationPayload.key: payload,
     }),
   );
 }

@@ -1,6 +1,20 @@
 # Changelog
 
-## [0.1.0-beta.2-wip]
+## [0.2.0-wip]
+
+### Added
+
+- `LocalNotificationsSemantics` enum + `notificationTapEventName`
+  const — all emitted attribute keys and event names are now
+  exported constants instead of raw string literals (keys
+  unchanged on the wire).
+- `example/`.
+
+### Changed
+
+- Widened `flutter_local_notifications` constraint to
+  `>=17.0.0 <23.0.0` (the instrumentation wraps calls via
+  closures and works across these majors).
 
 ## [0.1.0-beta.1] - 2026-05-16
 

@@ -4,5 +4,6 @@
 /// OpenTelemetry instrumentation for `package:flutter_local_notifications`.
 library;
 
+export 'src/local_notifications_semantics.dart';
 export 'src/local_notifications_suppression.dart';
 export 'src/otel_local_notifications.dart';
