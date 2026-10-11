@@ -1,7 +1,7 @@
 // Licensed under the Apache License, Version 2.0
 // Copyright 2025, Mindful Software LLC, All rights reserved.
 
-import 'package:dartastic_opentelemetry/dartastic_opentelemetry.dart';
+import 'package:dartastic_opentelemetry_api/dartastic_opentelemetry_api.dart';
 
 import 'local_notifications_semantics.dart';
 import 'local_notifications_suppression.dart';
@@ -9,7 +9,7 @@ import 'local_notifications_suppression.dart';
 const _tracerName = 'otel_flutter_local_notifications';
 const _notifSystem = 'flutter_local_notifications';
 
-Tracer _tracer() => OTel.tracerProvider().getTracer(_tracerName);
+APITracer _tracer() => OTelAPI.tracerProvider().getTracer(_tracerName);
 
 /// Generic helper. Opens a PRODUCER span named
 /// `local_notif <operation> [<id>]` with notification.* attrs.
@@ -26,7 +26,7 @@ Future<R> tracedLocalNotificationCall<R>({
   final span = _tracer().startSpan(
     id == null ? 'local_notif $operation' : 'local_notif $operation $id',
     kind: SpanKind.producer,
-    attributes: OTel.attributesFromMap(<String, Object>{
+    attributes: OTelAPI.attributesFromMap(<String, Object>{
       LocalNotificationsSemantics.notificationSystem.key: _notifSystem,
       LocalNotificationsSemantics.notificationOperation.key: operation,
       if (id != null) LocalNotificationsSemantics.notificationId.key: id,
@@ -35,8 +35,8 @@ Future<R> tracedLocalNotificationCall<R>({
   try {
     return await invoke();
   } catch (e, st) {
-    span.addAttributes(OTel.attributes([
-      OTel.attributeString(
+    span.addAttributes(OTelAPI.attributes([
+      OTelAPI.attributeString(
         ErrorAttributes.errorType.key,
         e.runtimeType.toString(),
       ),
@@ -61,7 +61,7 @@ void recordNotificationResponse({required int? id, String? payload}) {
   if (activeSpan == null || !activeSpan.isValid) return;
   activeSpan.addEventNow(
     notificationTapEventName,
-    OTel.attributesFromMap(<String, Object>{
+    OTelAPI.attributesFromMap(<String, Object>{
       LocalNotificationsSemantics.notificationSystem.key: _notifSystem,
       if (id != null) LocalNotificationsSemantics.notificationId.key: id,
       if (payload != null)
