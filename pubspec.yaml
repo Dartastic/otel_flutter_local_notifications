@@ -1,7 +1,8 @@
 name: otel_flutter_local_notifications
-description: OpenTelemetry instrumentation for
-  `package:flutter_local_notifications`. Wraps show / schedule / cancel
-  with notification.* spans.
+description: >-
+  OpenTelemetry instrumentation for flutter_local_notifications by
+  Dartastic.io. Adds standard OpenTelemetry observability to applications that
+  use flutter_local_notifications.
 version: 0.3.1-wip
 repository: https://github.com/dartastic/otel_flutter_local_notifications
 homepage: https://dartastic.io
